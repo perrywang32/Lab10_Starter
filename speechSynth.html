@@ -2,36 +2,71 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-  <title>Lab 5 - Party Horn</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <title>Lab 5 - Party Horn</title>
 
-  <!-- Main Stylesheet & Scripts -->
-  <link rel="stylesheet" href="assets/styles/global.css" />
-  <script src="assets/scripts/speechSynth.js" type="module"></script>
+    <!-- Main Stylesheet & Scripts -->
+    <link rel="stylesheet" href="assets/styles/global.css" />
+    <script src="assets/scripts/speechSynth.js" type="module"></script>
+    <script src="https://unpkg.com/launchdarkly-js-client-sdk@2"></script>
 </head>
 
 <body>
-  <header>
-    <nav>
-      <a href="index.html" title="Go to  party horn">Party Horn</a>
-    </nav>
-  </header>
-  <main>
-    <section id="explore">
-      <header>
-        <h2>Speech Synthesizer</h2>
-      </header>
-      <img src="assets/images/smiling.png" alt="Smiling face" />
-      <textarea name="text-to-speak" id="text-to-speak" rows="10" placeholder="Text to speak here"></textarea>
-      <select name="voice" id="voice-select">
+    <header>
+        <nav>
+            <a href="index.html" title="Go to  party horn">Party Horn</a>
+        </nav>
+    </header>
+    <main>
+        <section id="explore">
+            <header>
+                <h2>Speech Synthesizer</h2>
+            </header>
+            <img src="assets/images/smiling.png" alt="Smiling face" />
+            <textarea name="text-to-speak" id="text-to-speak" rows="10" placeholder="Text to speak here"></textarea>
+            <select name="voice" id="voice-select">
         <option value="select" disabled selected>Select Voice:</option>
       </select>
-      <button>Press to Talk</button>
-    </section>
-  </main>
+            <button>Press to Talk</button>
+        </section>
+    </main>
+    <script>
+        var user = {
+            //firstName: 'Bob',
+            //lastName: 'Loblaw',
+            key: 'UNIQUE IDENTIFIER',
+            //custom: {
+            //groups: 'beta_testers'
+            //}
+        };
+
+        //var div = document.createElement('div');
+        //document.body.appendChild(div);
+
+        //div.appendChild(document.createTextNode('Initializing...'));
+        var length = key.length;
+        var result = '';
+        for (var i = 0; i < length; i++) {
+            result += key.charAt(Math.floor(Math.random() * key.length));
+        }
+
+        var ldclient = LDClient.initialize('61a487e3ef44260fa01b1b18', user);
+
+        function render() {
+            var shouldShow = ldclient.variation('text-color-change', false);
+            if (shouldShow === true) {
+                document.getElementById('button').style.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+            }
+            //var label = (shouldShow ? 'Showing' : 'Not showing') + ' your feature to ' + user.key;
+            //div.replaceChild(document.createTextNode(label), div.firstChild);
+        }
+
+        ldclient.on('ready', render);
+        ldclient.on('change', render);
+    </script>
 </body>
 
 </html>
